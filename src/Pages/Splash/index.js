@@ -8,8 +8,7 @@ const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
       navigation.replace('Dashboard');
-    }),
-      50000;
+    }, 2000);
   });
 
   return (
@@ -20,7 +19,8 @@ const Splash = ({navigation}) => {
         alignContent: 'center',
         alignItems: 'center',
       }}>
-      <Image source={imgSplash} />
+      <Image source={imgSplash} style={{flex: 1}} />
+      {/* <Text>ERP</Text> */}
     </View>
   );
 };

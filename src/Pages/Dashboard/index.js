@@ -1,14 +1,29 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {color} from 'react-native-reanimated';
 import imgHeader from '../../Assets/Img/header.png';
+import icUser from '../../Assets/Icon/ic_user.png';
+import Icon from '../../Assets/Icon';
 
-const Dashboard = () => {
+const Dashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* <View style={styles.header}> */}
       <ImageBackground source={imgHeader} style={styles.imgBg}>
-        <View style={styles.headerNav}></View>
+        <View style={styles.headerNav}>
+          <TouchableOpacity
+            style={styles.navBox}
+            onPress={() => alert('Coming Soon !')}>
+            <Image source={Icon.icUser} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.headerCaption}>
           <Text style={styles.txtHeader}>Dashboard</Text>
           <Text style={styles.txtSubHeader}>Welcome ....</Text>
@@ -17,28 +32,47 @@ const Dashboard = () => {
       {/* </View> */}
       <View style={styles.content}>
         <View style={styles.menu}>
-          <View style={styles.menu}>
-            <View style={styles.box} />
-          </View>
-          <View>
-            <Text>1</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => navigation.navigate('LoanCalculator')}
+            underlayColor="blue">
+            <Image source={Icon.icLoanCal} style={styles.imgIcon} />
+            <Text style={styles.BoxText}>Loan Calculator</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => alert('Coming Soon !')}>
+            <Image source={Icon.icLoan} style={styles.imgIcon} />
+            <Text style={styles.BoxText}>Personal Loan</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.menu}>
-          <View>
-            <Text>1</Text>
-          </View>
-          <View>
-            <Text>1</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => alert('Coming Soon !')}>
+            <Image source={Icon.icAbout} style={styles.imgIcon} />
+            <Text style={styles.BoxText}>About ERP</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => alert('Coming Soon !')}>
+            <Image source={Icon.icAbt_thf} style={styles.imgIcon} />
+            <Text style={styles.BoxText}>About Trihamas</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.menu}>
-          <View>
-            <Text>1</Text>
-          </View>
-          <View>
-            <Text>1</Text>
-          </View>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => alert('Coming Soon !')}>
+            <Image source={Icon.icBranch} style={styles.imgIcon} />
+            <Text style={styles.BoxText}>Branch Office</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => alert('Coming Soon !')}>
+            <Image source={Icon.icSetting} style={styles.imgIcon} />
+            <Text style={styles.BoxText}>Setting</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.footer}>
@@ -53,17 +87,31 @@ export default Dashboard;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#EFE8E8',
+    backgroundColor: '#ff0000',
     flex: 1,
   },
   headerCaption: {
     flex: 2,
-    padding: 20,
+    paddingLeft: 20,
   },
   headerNav: {
     marginBottom: 10,
-    borderWidth: 2,
+    marginRight: 30,
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  navBox: {
+    marginTop: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    width: 50,
+    height: 50,
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.8,
   },
   txtHeader: {
     fontSize: 22,
@@ -89,15 +137,42 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
   },
   menu: {
-    backgroundColor: 'grey',
+    // backgroundColor: 'grey',
     flexDirection: 'row',
     flex: 1,
+    marginBottom: 30,
+    justifyContent: 'space-between',
+    alignContent: 'stretch',
   },
   box: {
-    borderWidth: 1,
     width: 120,
     height: 100,
     backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowRadius: 4.65,
+    shadowOpacity: 0.29,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    elevation: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imgIcon: {
+    width: 60,
+    height: 60,
+    alignContent: 'stretch',
+    justifyContent: 'center',
+  },
+  BoxText: {
+    marginTop: 10,
+    color: '#837878',
+    fontSize: 10,
+    fontFamily: 'roboto',
+    fontWeight: '400',
+    letterSpacing: 2,
   },
   footer: {
     backgroundColor: '#EFE8E8',
