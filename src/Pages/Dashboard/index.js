@@ -133,8 +133,8 @@ const styles = StyleSheet.create({
     marginTop: -50,
     flex: 7,
     padding: 40,
-    borderTopEndRadius: 50,
-    borderTopLeftRadius: 50,
+    borderTopEndRadius: 30,
+    borderTopLeftRadius: 30,
   },
   menu: {
     // backgroundColor: 'grey',
