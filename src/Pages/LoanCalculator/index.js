@@ -35,7 +35,7 @@ const LoanCalculator = () => {
         <View style={styles.header}>
           <View style={styles.BoxContent}>
             <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Tenor</Text>
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.action}>
@@ -54,36 +54,36 @@ const LoanCalculator = () => {
             </View>
           </View>
           <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Admin Fee</Text>
+            <Text style={styles.textHeader}>Down Payment</Text>
           </View>
           <View style={styles.BoxContent}>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input}
+                placeholder="0"
+                keyboardType="numeric"
+              />
             </View>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input}
+                placeholder="0"
+                keyboardType="numeric"
+              />
             </View>
           </View>
           <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Margin rate</Text>
+            <Text style={styles.textHeader}>Wilayah</Text>
           </View>
           <View style={styles.BoxContent}>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input}
+                placeholder="0"
+                keyboardType="decimal-pad"
+              />
             </View>
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
@@ -97,8 +97,8 @@ const LoanCalculator = () => {
         <Text style={styles.textInfo}>Assets Information</Text>
         <View style={styles.header}>
           <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Usage</Text>
+            <Text style={styles.textHeader}>Condition</Text>
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.action}>
@@ -117,8 +117,8 @@ const LoanCalculator = () => {
             </View>
           </View>
           <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Kind</Text>
+            <Text style={styles.textHeader}>Category</Text>
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.action}>
@@ -137,8 +137,8 @@ const LoanCalculator = () => {
             </View>
           </View>
           <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Merk</Text>
+            <Text style={styles.textHeader}>Model</Text>
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.action}>
@@ -156,12 +156,52 @@ const LoanCalculator = () => {
               </Picker>
             </View>
           </View>
+          <View style={styles.BoxContent}>
+            <Text style={styles.textHeader}>Built Year</Text>
+            <Text style={styles.textHeader}>Off the road price</Text>
+          </View>
+          <View style={styles.BoxContent}>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input}
+                placeholder="0000"
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input}
+                placeholder="0"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+          {/* <View style={styles.BoxContent}>
+            <Text style={styles.textHeader}>Off The Road Price</Text>
+            <Text style={styles.textHeader}>Model</Text>
+          </View>
+          <View style={styles.BoxContent}>
+            <View style={styles.action}>
+              <Picker style={styles.dropdown} mode="dropdown">
+                <Picker.Item label="select one" value="" />
+                <Picker.Item label="Arrear" value="Ar" />
+                <Picker.Item label="Advance" value="Ad" />
+              </Picker>
+            </View>
+            <View style={styles.action}>
+              <Picker style={styles.dropdown} mode="dropdown">
+                <Picker.Item label="select one" value="" />
+                <Picker.Item label="Arrear" value="Ar" />
+                <Picker.Item label="Advance" value="Ad" />
+              </Picker>
+            </View>
+          </View> */}
         </View>
         <Text style={styles.textInfo}>Insurance Information</Text>
         <View style={styles.header}>
           <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Status</Text>
+            <Text style={styles.textHeader}>Insurance Type</Text>
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.action}>
@@ -180,27 +220,7 @@ const LoanCalculator = () => {
             </View>
           </View>
           <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
-          </View>
-          <View style={styles.BoxContent}>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
-            </View>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
-            </View>
-          </View>
-          <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Rate Margin</Text>
             <Text style={styles.textHeader}>Type</Text>
           </View>
           <View style={styles.BoxContent}>
@@ -219,8 +239,30 @@ const LoanCalculator = () => {
               </Picker>
             </View>
           </View>
+          {/* <View style={styles.BoxContent}>
+            <Text style={styles.textHeader}>Type</Text>
+            <Text style={styles.textHeader}>Type</Text>
+          </View>
+          <View style={styles.BoxContent}>
+            <View style={styles.action}>
+              <Picker style={styles.dropdown} mode="dropdown">
+                <Picker.Item label="select one" value="" />
+                <Picker.Item label="Arrear" value="Ar" />
+                <Picker.Item label="Advance" value="Ad" />
+              </Picker>
+            </View>
+            <View style={styles.action}>
+              <Picker style={styles.dropdown} mode="dropdown">
+                <Picker.Item label="select one" value="" />
+                <Picker.Item label="Arrear" value="Ar" />
+                <Picker.Item label="Advance" value="Ad" />
+              </Picker>
+            </View>
+          </View> */}
         </View>
-        <TouchableOpacity style={styles.boxbutton}>
+        <TouchableOpacity
+          style={styles.boxbutton}
+          onPress={() => alert('function is not ready !')}>
           <Text style={styles.textButton}>Calculate</Text>
         </TouchableOpacity>
 
@@ -300,14 +342,33 @@ const styles = StyleSheet.create({
     width: '50%',
     marginHorizontal: 5,
   },
+  actionInput: {
+    flex: 1,
+    borderBottomWidth: 1.5,
+    borderBottomColor: '#22A2B4',
+    marginBottom: 15,
+    width: '50%',
+    marginHorizontal: 5,
+    height: 25,
+  },
   dropdown: {
     flex: 1,
     height: 25,
     color: '#A48E8E',
   },
+  Input: {
+    color: '#A48E8E',
+    fontSize: 12,
+    backgroundColor: 'transparent',
+
+    padding: 0,
+    marginLeft: 5,
+  },
   drapdownItem: {
     fontFamily: 'roboto',
     fontSize: 10,
+    margin: 0,
+    padding: 0,
   },
   garis: {
     borderWidth: 1,
