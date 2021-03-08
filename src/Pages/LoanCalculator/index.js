@@ -48,8 +48,10 @@ const LoanCalculator = () => {
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+                <Picker.Item label="1" value="1" />
+                <Picker.Item label="2" value="2" />
+                <Picker.Item label="3" value="3" />
+                <Picker.Item label="4" value="4" />
               </Picker>
             </View>
           </View>
@@ -88,8 +90,11 @@ const LoanCalculator = () => {
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+                <Picker.Item label="Wilayah 1" value="1" />
+                <Picker.Item label="Wilayah 2" value="2" />
+                <Picker.Item label="Wilayah 3" value="3" />
+                <Picker.Item label="Wilayah 4" value="4" />
+                <Picker.Item label="Wilayah 5" value="5" />
               </Picker>
             </View>
           </View>
@@ -104,15 +109,15 @@ const LoanCalculator = () => {
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+                <Picker.Item label="Pribadi/Dinas" value="Pribadi/Dinas" />
+                <Picker.Item label="Komersil" value="Komersil" />
               </Picker>
             </View>
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+                <Picker.Item label="Used" value="Used" />
+                <Picker.Item label="New" value="New" />
               </Picker>
             </View>
           </View>
@@ -158,7 +163,7 @@ const LoanCalculator = () => {
           </View>
           <View style={styles.BoxContent}>
             <Text style={styles.textHeader}>Built Year</Text>
-            <Text style={styles.textHeader}>Off the road price</Text>
+            <Text style={styles.textHeader}>Unit Type</Text>
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.actionInput}>
@@ -168,19 +173,6 @@ const LoanCalculator = () => {
                 keyboardType="numeric"
               />
             </View>
-            <View style={styles.actionInput}>
-              <TextInput
-                style={styles.Input}
-                placeholder="0"
-                keyboardType="numeric"
-              />
-            </View>
-          </View>
-          {/* <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Off The Road Price</Text>
-            <Text style={styles.textHeader}>Model</Text>
-          </View>
-          <View style={styles.BoxContent}>
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
                 <Picker.Item label="select one" value="" />
@@ -188,15 +180,10 @@ const LoanCalculator = () => {
                 <Picker.Item label="Advance" value="Ad" />
               </Picker>
             </View>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
-            </View>
-          </View> */}
+          </View>
         </View>
+
+        {/* asuransi */}
         <Text style={styles.textInfo}>Insurance Information</Text>
         <View style={styles.header}>
           <View style={styles.BoxContent}>
@@ -207,15 +194,15 @@ const LoanCalculator = () => {
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+                <Picker.Item label="insurance" value="0" />
+                <Picker.Item label="non insurance" value="1" />
               </Picker>
             </View>
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+                <Picker.Item label="All Risk" value="AT" />
+                <Picker.Item label="TLO" value="TLO" />
               </Picker>
             </View>
           </View>
@@ -271,27 +258,51 @@ const LoanCalculator = () => {
         <Text style={styles.textInfo}>Estimation Result Loan</Text>
         <View style={styles.result}>
           <View style={styles.item}>
+            <Text style={styles.title}>Off The Road Price</Text>
+            <Text style={styles.titleValue}>3.000.000</Text>
+          </View>
+          <View style={styles.item2}>
+            <Text style={styles.title}>Down Payment</Text>
+            <Text style={styles.titleValue}>3.000.000</Text>
+          </View>
+          <View style={styles.item}>
+            <Text style={styles.title}>Principal</Text>
+            <Text style={styles.titleValue}>3.000.000</Text>
+          </View>
+          <View style={styles.item2}>
+            <Text style={styles.title}>Insurance Premi</Text>
+            <Text style={styles.titleValue}>3.000.000</Text>
+          </View>
+          <View style={styles.item}>
+            <Text style={styles.title}>Interest</Text>
+            <Text style={styles.titleValue}>3.000.000</Text>
+          </View>
+          <View style={styles.item2}>
+            <Text style={styles.title}>Principal + Interest</Text>
+            <Text style={styles.titleValue}>3.000.000</Text>
+          </View>
+          <View style={styles.item}>
+            <Text style={styles.title}>Tenor (month)</Text>
+            <Text style={styles.titleValue}>12</Text>
+          </View>
+          <View style={styles.item2}>
             <Text style={styles.title}>Installment</Text>
             <Text style={styles.titleValue}>3.000.000</Text>
           </View>
+          <View style={styles.item}>
+            <Text style={styles.title}>Admin Fee</Text>
+            <Text style={styles.titleValue}>3.000.000</Text>
+          </View>
           <View style={styles.item2}>
-            <Text style={styles.title}>Total Fee</Text>
+            <Text style={styles.title}>Provisi</Text>
             <Text style={styles.titleValue}>3.000.000</Text>
           </View>
           <View style={styles.item}>
-            <Text style={styles.title}>Total Fee</Text>
+            <Text style={styles.title}>Diskon</Text>
             <Text style={styles.titleValue}>3.000.000</Text>
           </View>
-          <View style={styles.item2}>
-            <Text style={styles.title}>Total Fee</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item}>
-            <Text style={styles.title}>Total Fee</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item2}>
-            <Text style={styles.title}>Total Fee</Text>
+          <View style={styles.itemtotal}>
+            <Text style={styles.title}>Total Disburse</Text>
             <Text style={styles.titleValue}>3.000.000</Text>
           </View>
         </View>
@@ -467,5 +478,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     flexWrap: 'nowrap',
     justifyContent: 'space-between',
+  },
+  itemtotal: {
+    borderTopWidth: 1.5,
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 30,
+    padding: 10,
   },
 });
