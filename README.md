@@ -36,9 +36,9 @@ Konfirmasi penambahan atau perubahan file
 
 Kirim perubahan ke dalam repository
 
-**git push origin master**
+****git push origin master****
 
-**Menjalankan Aplikasi**
+## **Menjalankan Aplikasi**
 
 setelah folder repositori di clone/di download, buka command line / git bash di folder tersebut
 
