@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
 import {
   Button,
@@ -12,22 +12,15 @@ import {
   View,
 } from 'react-native';
 import {color} from 'react-native-reanimated';
-
-const Hasil = [
-  {id: '1', name: 'ulum', nilai: 10},
-  {id: '2', name: 'ulum', nilai: 10},
-  {id: '3', name: 'ulum', nilai: 10},
-  {id: '4', name: 'ulum', nilai: 10},
-];
-
-const Item = ({title}) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+import DataAPI from '../DataAPI';
 
 const LoanCalculator = () => {
-  const renderItem = ({item}) => <Item title={item.name} />;
+  const [selectedValueType, setSelectedValueType] = useState('');
+  const [selectedValueTenor, setSelectedValueTenor] = useState('');
+  const [selectedValueWilayah, setSelectedValueWilayah] = useState('');
+  const [selectedValueUsage, setSelectedValueUsage] = useState('');
+  const [selectedValueCondition, setSelectedValueCondition] = useState('');
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -39,19 +32,45 @@ const LoanCalculator = () => {
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
+              <Picker
+                style={styles.dropdown}
+                mode="dropdown"
+                selectedValue={selectedValueType}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValueType(itemValue)
+                }>
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+                {Object.keys(DataAPI.type).map((key) => {
+                  return (
+                    <Picker.Item
+                      label={DataAPI.type[key]}
+                      value={key}
+                      key={key}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
+                {/* <Picker.Item label="Arrear" value="Ar" />
+                <Picker.Item label="Advance" value="Ad" /> */}
               </Picker>
             </View>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
+              <Picker
+                style={styles.dropdown}
+                mode="dropdown"
+                selectedValue={selectedValueTenor}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValueTenor(itemValue)
+                }>
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-                <Picker.Item label="4" value="4" />
+                {Object.keys(DataAPI.tenor).map((key) => {
+                  return (
+                    <Picker.Item
+                      label={DataAPI.tenor[key]}
+                      value={key}
+                      key={key}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
               </Picker>
             </View>
           </View>
@@ -88,13 +107,23 @@ const LoanCalculator = () => {
               />
             </View>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
+              <Picker
+                style={styles.dropdown}
+                mode="dropdown"
+                selectedValue={selectedValueWilayah}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValueWilayah(itemValue)
+                }>
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Wilayah 1" value="1" />
-                <Picker.Item label="Wilayah 2" value="2" />
-                <Picker.Item label="Wilayah 3" value="3" />
-                <Picker.Item label="Wilayah 4" value="4" />
-                <Picker.Item label="Wilayah 5" value="5" />
+                {Object.keys(DataAPI.wilayah).map((key) => {
+                  return (
+                    <Picker.Item
+                      label={DataAPI.wilayah[key]}
+                      value={key}
+                      key={key}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
               </Picker>
             </View>
           </View>
@@ -107,17 +136,47 @@ const LoanCalculator = () => {
           </View>
           <View style={styles.BoxContent}>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
+              <Picker
+                style={styles.dropdown}
+                mode="dropdown"
+                selectedValue={selectedValueUsage}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValueUsage(itemValue)
+                }>
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Pribadi/Dinas" value="Pribadi/Dinas" />
-                <Picker.Item label="Komersil" value="Komersil" />
+                {Object.keys(DataAPI.usage).map((key) => {
+                  return (
+                    <Picker.Item
+                      label={DataAPI.usage[key]}
+                      value={key}
+                      key={key}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
+                {/* <Picker.Item label="Pribadi/Dinas" value="Pribadi/Dinas" />
+                <Picker.Item label="Komersil" value="Komersil" /> */}
               </Picker>
             </View>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
+              <Picker
+                style={styles.dropdown}
+                mode="dropdown"
+                selectedValue={selectedValueCondition}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValueCondition(itemValue)
+                }>
                 <Picker.Item label="select one" value="" />
-                <Picker.Item label="Used" value="Used" />
-                <Picker.Item label="New" value="New" />
+                {Object.keys(DataAPI.condition).map((key) => {
+                  return (
+                    <Picker.Item
+                      label={DataAPI.condition[key]}
+                      value={key}
+                      key={key}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
+                {/* <Picker.Item label="Used" value="Used" />
+                <Picker.Item label="New" value="New" /> */}
               </Picker>
             </View>
           </View>
@@ -226,26 +285,6 @@ const LoanCalculator = () => {
               </Picker>
             </View>
           </View>
-          {/* <View style={styles.BoxContent}>
-            <Text style={styles.textHeader}>Type</Text>
-            <Text style={styles.textHeader}>Type</Text>
-          </View>
-          <View style={styles.BoxContent}>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
-            </View>
-            <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
-              </Picker>
-            </View>
-          </View> */}
         </View>
         <TouchableOpacity
           style={styles.boxbutton}
@@ -256,56 +295,58 @@ const LoanCalculator = () => {
         <View style={styles.garis} />
 
         <Text style={styles.textInfo}>Estimation Result Loan</Text>
-        <View style={styles.result}>
-          <View style={styles.item}>
-            <Text style={styles.title}>Off The Road Price</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
+        <ScrollView>
+          <View style={styles.result}>
+            <View style={styles.item}>
+              <Text style={styles.title}>Off The Road Price</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item2}>
+              <Text style={styles.title}>Down Payment</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={styles.title}>Principal</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item2}>
+              <Text style={styles.title}>Insurance Premi</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={styles.title}>Interest</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item2}>
+              <Text style={styles.title}>Principal + Interest</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={styles.title}>Tenor (month)</Text>
+              <Text style={styles.titleValue}>12</Text>
+            </View>
+            <View style={styles.item2}>
+              <Text style={styles.title}>Installment</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={styles.title}>Admin Fee</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item2}>
+              <Text style={styles.title}>Provisi</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.item}>
+              <Text style={styles.title}>Diskon</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
+            <View style={styles.itemtotal}>
+              <Text style={styles.title}>Total Disburse</Text>
+              <Text style={styles.titleValue}>3.000.000</Text>
+            </View>
           </View>
-          <View style={styles.item2}>
-            <Text style={styles.title}>Down Payment</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item}>
-            <Text style={styles.title}>Principal</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item2}>
-            <Text style={styles.title}>Insurance Premi</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item}>
-            <Text style={styles.title}>Interest</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item2}>
-            <Text style={styles.title}>Principal + Interest</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item}>
-            <Text style={styles.title}>Tenor (month)</Text>
-            <Text style={styles.titleValue}>12</Text>
-          </View>
-          <View style={styles.item2}>
-            <Text style={styles.title}>Installment</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item}>
-            <Text style={styles.title}>Admin Fee</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item2}>
-            <Text style={styles.title}>Provisi</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.item}>
-            <Text style={styles.title}>Diskon</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-          <View style={styles.itemtotal}>
-            <Text style={styles.title}>Total Disburse</Text>
-            <Text style={styles.titleValue}>3.000.000</Text>
-          </View>
-        </View>
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
