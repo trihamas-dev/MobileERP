@@ -1,4 +1,5 @@
 {
   "name": "MobileERP",
-  "displayName": "MobileERP"
+  "displayName": "MobileERP",
+  "wsURL": "http://dw.trihamas.co.id/dmy_apithf/mob_erp.asmx/"
 }
