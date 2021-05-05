@@ -11,8 +11,9 @@ import {color} from 'react-native-reanimated';
 import imgHeader from '../../Assets/Img/header.png';
 import icUser from '../../Assets/Icon/ic_user.png';
 import Icon from '../../Assets/Icon';
-
+const IMEI = require('react-native-imei');
 const Dashboard = ({navigation}) => {
+  
   return (
     <View style={styles.container}>
       {/* <View style={styles.header}> */}
@@ -27,6 +28,8 @@ const Dashboard = ({navigation}) => {
         <View style={styles.headerCaption}>
           <Text style={styles.txtHeader}>Dashboard</Text>
           <Text style={styles.txtSubHeader}>Welcome ....</Text>
+          <Text style={styles.txtSubHeader}>My IMEI Number</Text>
+          <Text style={styles.txtSubHeader}></Text>
         </View>
       </ImageBackground>
       {/* </View> */}

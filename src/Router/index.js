@@ -1,13 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Dashboard, LoanCalculator, Splash} from '../Pages';
+import {CekImei, Dashboard, LoanCalculator, Splash} from '../Pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="LoanCalculator">
+    <Stack.Navigator initialRouteName="cekimei">
+      <Stack.Screen
+        name="cekimei"
+        component={CekImei}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Splash"
         component={Splash}
