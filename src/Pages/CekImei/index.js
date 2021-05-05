@@ -45,8 +45,8 @@ export default class CekImei extends React.Component {
       console.log(this.state.device_IMEI);
     });
     
-    //   _wsJsonConnectionHTTP("check_imei", "imei_no=192891028101829101", (d) => {
-    //     //d.value
+      // _wsJsonConnectionHTTP("check_imei", "imei_no=192891028101829101", (d) => {
+        //d.value
     // });
     
   }
