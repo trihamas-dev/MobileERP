@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button,TouchableOpacity,PermissionsAndroid,Platform,Alert } from 'react-native'
+import { _wsJsonConnectionHTTP } from '../../fungsi/function';
 
 
 export async function request_READ_PHONE_STATE() {
@@ -40,14 +41,16 @@ export default class CekImei extends React.Component {
   }
   getDeviceIMEI = () => {
     const IMEI = require('react-native-imei')
+    let imei="";
     var IMEI_2 = IMEI.getImei().then(imeiList => {
       this.setState({ device_IMEI : imeiList });
+      imei=imeiList;
       console.log(this.state.device_IMEI);
     });
     
-      // _wsJsonConnectionHTTP("check_imei", "imei_no=192891028101829101", (d) => {
-        //d.value
-    // });
+       _wsJsonConnectionHTTP("check_imei", "imei_no="=imei, (d) => {
+         Alert.alert("info","status="+d.value);
+      });
     
   }
 
