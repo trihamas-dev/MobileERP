@@ -8,27 +8,27 @@ Aplikasi ini di kembangkan oleh Developer IT Trihamas Finance
 
 =======================================
 
-## *Panduan penggunaan*
+## _Panduan penggunaan_
 
-*mengunduh Repository*
+_mengunduh Repository_
 
 unduh repository kedalam komputer menggunakan perintah git clone. Url repository dapat dilihat di dalam repository
 
 **git clone <url repo> <folder tujuan>**
 
-*Memperbarui Repository*
+_Memperbarui Repository_
 
 untuk memperbaharui repository agar uptodate gunakan perintah git pull
 
 **git pull origin master**
 
-*Mengunggah Perubahan*
+_Mengunggah Perubahan_
 
 Jangan lupa untuk melakukan pull terlebih dahulu sebelum melakukan push.
 
 Tambah file baru atau ubah file
 
- **git add <nama file>**
+**git add <nama file>**
 
 Konfirmasi penambahan atau perubahan file
 
@@ -36,7 +36,7 @@ Konfirmasi penambahan atau perubahan file
 
 Kirim perubahan ke dalam repository
 
-****git push origin master****
+\***\*git push origin master\*\***
 
 ## **Menjalankan Aplikasi**
 
@@ -50,6 +50,16 @@ tunggu sampai proses selelesai kemudian ketik perintah untuk menjalankan aplikas
 atau
 
 **npx react-native run-android**
+
+Installasi IMEI
+**npm install react-native-imei**
+
+setelah itu jalankan perintah
+**react-native link react-native-imei**
+
+tambahan permission
+<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+lokasi : android -> app -> src -> main -> AndroidManifest.xml
 
 tunggu sampai proses selesai dan aplikasi otomatis terbuka di emulator/real device android/ios
 
