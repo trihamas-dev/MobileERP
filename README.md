@@ -56,6 +56,9 @@ Installasi IMEI
 
 setelah itu jalankan perintah
 **react-native link react-native-imei**
+jika error jalankan script
+**npm i -g react-native-cli**
+kemudian ulang kembali script diatas
 
 tambahan permission
 <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
