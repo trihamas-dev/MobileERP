@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {useState} from 'react';
 import {Picker} from '@react-native-picker/picker';
 import {
   Dimensions,
@@ -9,71 +9,45 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { _wsJsonConnectionHTTP } from '../../fungsi/function';
+import {color} from 'react-native-reanimated';
+import DataAPI from '../DataAPI';
 
-const LoanTitle = (props) => {
-  return (
-    <View>
-      <View style={styles.BoxContent}>
-        <Text style={styles.textHeader}>{props.title1}</Text>
-        <Text style={styles.textHeader}>{props.title2}</Text>
-      </View>
-    </View>
-  );
-};
+const LoanCalculator = () => {
+  const [selectedValueType, setSelectedValueType] = useState('');
+  const [selectedValueTenor, setSelectedValueTenor] = useState('');
+  const [selectedValueWilayah, setSelectedValueWilayah] = useState('');
+  const [selectedValueUsage, setSelectedValueUsage] = useState('');
+  const [selectedValueCondition, setSelectedValueCondition] = useState('');
 
-const LoanItemResult = (props) => {
-  const screenWidth = Dimensions.get('window').width;
-  return (
-    <View>
-      <View style={styles.item}>
-        <Text style={styles.title}>{props.itemWhiteLeft}</Text>
-        <Text style={styles.titleValue}>{props.itemWhiteRight}</Text>
-      </View>
-      <View style={styles.item2}>
-        <Text style={styles.title}>{props.itemColorLeft}</Text>
-        <Text style={styles.titleValue}>{props.itemColorRight}</Text>
-      </View>
-    </View>
-  );
-};
-
-class LoanCalculator extends Component {
-  constructor(props) {
-    super(props)
-  
-    this.state = {
-      p_tenor :"0",
-      p_type :"0",
-      p_vehicletype :"0",
-      p_vehiclekondisi :"0",
-      p_vehiclekategory :"0",
-      p_region :"0",
-
-       arr_tenor : [],
-       arr_type : [],
-       arr_vehiclekondisi : [],
-       arr_vehicletype : [],
-       arr_vehiclecategory : [],
-       arr_region : []
-    }
-  }
-  componentDidMount(){
-    _wsJsonConnectionHTTP("loancalculator_data", "", (data) => {
-    this.setState({
-      arr_tenor:data.p_tenor,
-      arr_type:data.p_type,
-      arr_vehiclekondisi:data.p_vehiclekondisi,
-      arr_vehicletype:data.p_vehicletype,
-      arr_vehiclecategory:data.p_vehiclekategory,
-      arr_region:data.p_region
-    })  
-    });
-  }
-  
-  render() {
+  const LoanTitle = (props) => {
     return (
-      <ScrollView style={styles.container}>
+      <View>
+        <View style={styles.BoxContent}>
+          <Text style={styles.textHeader}>{props.title1}</Text>
+          <Text style={styles.textHeader}>{props.title2}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  const LoanItemResult = (props) => {
+    const screenWidth = Dimensions.get('window').width;
+    return (
+      <View>
+        <View style={styles.item}>
+          <Text style={styles.title}>{props.itemWhiteLeft}</Text>
+          <Text style={styles.titleValue}>{props.itemWhiteRight}</Text>
+        </View>
+        <View style={styles.item2}>
+          <Text style={styles.title}>{props.itemColorLeft}</Text>
+          <Text style={styles.titleValue}>{props.itemColorRight}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <ScrollView style={styles.container}>
       <Text style={styles.textInfo}>Loan Information</Text>
       <View style={styles.header}>
         <LoanTitle title1="Type" title2="Tenor" />
@@ -82,34 +56,41 @@ class LoanCalculator extends Component {
             <Picker
               style={styles.dropdown}
               mode="dropdown"
-              selectedValue={this.state.p_type}
-              onValueChange={(value,index)=>this.setState({p_type:value  })}
-              >
-              <Picker.Item label="select one" value="0" />
-              {this.state.arr_type.map((d,i) => {
+              selectedValue={
+                (selectedValueType, console.log(selectedValueType))
+              }
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValueType(itemIndex)
+              }>
+              <Picker.Item label="select one" value="" />
+              {Object.keys(DataAPI.type).map((key) => {
                 return (
                   <Picker.Item
-                    label={d.label}
-                    value={d.value}
-                    key={i}
+                    label={DataAPI.type[key]}
+                    value={key}
+                    key={key}
                   />
                 ); //if you have a bunch of keys value pair
               })}
+              {/* <Picker.Item label="Arrear" value="Ar" />
+                <Picker.Item label="Advance" value="Ad" /> */}
             </Picker>
           </View>
           <View style={styles.action}>
             <Picker
               style={styles.dropdown}
               mode="dropdown"
-              selectedValue={this.state.p_tenor}
-              onValueChange={(value,index)=>this.setState({p_tenor:value  })}>
-              <Picker.Item label="select one" value="0" />
-              {this.state.arr_tenor.map((d,i) => {
+              selectedValue={selectedValueTenor}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValueTenor(itemValue)
+              }>
+              <Picker.Item label="select one" value="" />
+              {Object.keys(DataAPI.tenor).map((key) => {
                 return (
                   <Picker.Item
-                    label={d.label}
-                    value={d.value}
-                    key={i}
+                    label={DataAPI.tenor[key]}
+                    value={key}
+                    key={key}
                   />
                 ); //if you have a bunch of keys value pair
               })}
@@ -134,6 +115,7 @@ class LoanCalculator extends Component {
             />
           </View>
         </View>
+
         <LoanTitle title1="Margin Rate" title2="Wilayah" />
         <View style={styles.BoxContent}>
           <View style={styles.actionInput}>
@@ -147,15 +129,17 @@ class LoanCalculator extends Component {
             <Picker
               style={styles.dropdown}
               mode="dropdown"
-              selectedValue={this.state.p_region}
-              onValueChange={(value,index)=>this.setState({p_region:value  })}>
-              <Picker.Item label="select one" value="0" />
-              {this.state.arr_region.map((d,i) => {
+              selectedValue={selectedValueWilayah}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValueWilayah(itemValue)
+              }>
+              <Picker.Item label="select one" value="" />
+              {Object.keys(DataAPI.wilayah).map((key) => {
                 return (
                   <Picker.Item
-                    label={d.label}
-                    value={d.value}
-                    key={i}
+                    label={DataAPI.wilayah[key]}
+                    value={key}
+                    key={key}
                   />
                 ); //if you have a bunch of keys value pair
               })}
@@ -171,36 +155,44 @@ class LoanCalculator extends Component {
             <Picker
               style={styles.dropdown}
               mode="dropdown"
-              selectedValue={this.state.p_vehiclekategory}
-              onValueChange={(value,index)=>this.setState({p_vehiclekategory:value  })}>
-              <Picker.Item label="select one" value="0" />
-              {this.state.arr_vehiclecategory.map((d,i) => {
+              selectedValue={selectedValueUsage}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValueUsage(itemValue)
+              }>
+              <Picker.Item label="select one" value="" />
+              {Object.keys(DataAPI.usage).map((key) => {
                 return (
                   <Picker.Item
-                    label={d.label}
-                    value={d.value}
-                    key={i}
+                    label={DataAPI.usage[key]}
+                    value={key}
+                    key={key}
                   />
                 ); //if you have a bunch of keys value pair
               })}
+              {/* <Picker.Item label="Pribadi/Dinas" value="Pribadi/Dinas" />
+                <Picker.Item label="Komersil" value="Komersil" /> */}
             </Picker>
           </View>
           <View style={styles.action}>
             <Picker
               style={styles.dropdown}
               mode="dropdown"
-              selectedValue={this.state.p_vehiclekondisi}
-              onValueChange={(value,index)=>this.setState({p_vehiclekondisi:value  })}>
-              <Picker.Item label="select one" value="0" />
-              {this.state.arr_vehiclekondisi.map((d,i) => {
+              selectedValue={selectedValueCondition}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValueCondition(itemValue)
+              }>
+              <Picker.Item label="select one" value="" />
+              {Object.keys(DataAPI.condition).map((key) => {
                 return (
                   <Picker.Item
-                    label={d.label}
-                    value={d.value}
-                    key={i}
+                    label={DataAPI.condition[key]}
+                    value={key}
+                    key={key}
                   />
                 ); //if you have a bunch of keys value pair
               })}
+              {/* <Picker.Item label="Used" value="Used" />
+                <Picker.Item label="New" value="New" /> */}
             </Picker>
           </View>
         </View>
@@ -208,20 +200,10 @@ class LoanCalculator extends Component {
         <LoanTitle title1="Kind" title2="Category" />
         <View style={styles.BoxContent}>
           <View style={styles.action}>
-            <Picker style={styles.dropdown} mode="dropdown"
-            selectedValue={this.state.p_vehicletype}
-            onValueChange={(value,index)=>this.setState({p_vehicletype:value  })}>
-            <Picker.Item label="select one" value="0" />
-            {this.state.arr_vehicletype.map((d,i) => {
-              return (
-                <Picker.Item
-                  label={d.label}
-                  value={d.value}
-                  key={i}
-                />
-              ); //if you have a bunch of keys value pair
-            })}
-              
+            <Picker style={styles.dropdown} mode="dropdown">
+              <Picker.Item label="select one" value="" />
+              <Picker.Item label="Arrear" value="Ar" />
+              <Picker.Item label="Advance" value="Ad" />
             </Picker>
           </View>
           <View style={styles.action}>
@@ -271,7 +253,7 @@ class LoanCalculator extends Component {
       </View>
 
       {/* asuransi */}
-       <Text style={styles.textInfo}>Insurance Information</Text>
+      <Text style={styles.textInfo}>Insurance Information</Text>
       <View style={styles.header}>
         <LoanTitle title1="Status" title2="Insurance Type" />
         <View style={styles.BoxContent}>
@@ -317,45 +299,7 @@ class LoanCalculator extends Component {
       <View style={styles.garis} />
 
       <Text style={styles.textInfo}>Estimation Result Loan</Text>
-      <ScrollView horizontal pagingEnabled={true}> 
-         <View style={styles.result}>
-          <LoanItemResult
-            itemWhiteLeft="Off The Road Price"
-            itemWhiteRight="120.000.000"
-            itemColorLeft="Down Payment"
-            itemColorRight="20.000.000"
-          />
-          <LoanItemResult
-            itemWhiteLeft="Principal"
-            itemWhiteRight="180.000.000"
-            itemColorLeft="Insurance Premi"
-            itemColorRight="1.500.000"
-          />
-          <LoanItemResult
-            itemWhiteLeft="Interest"
-            itemWhiteRight="10.000.000"
-            itemColorLeft="Principal+interest"
-            itemColorRight="190.000.000"
-          />
-          <LoanItemResult
-            itemWhiteLeft="tenor (month)"
-            itemWhiteRight="24"
-            itemColorLeft="Installment"
-            itemColorRight="5.300.000"
-          />
-          <LoanItemResult
-            itemWhiteLeft="Admin Fee"
-            itemWhiteRight="500.000"
-            itemColorLeft="Provisi"
-            itemColorRight="500.000"
-          />
-          <LoanItemResult
-            itemWhiteLeft="Discon"
-            itemWhiteRight="5.000.000"
-            itemColorLeft="Total Disburse"
-            itemColorRight="170.000.000"
-          />
-        </View>
+      <ScrollView horizontal pagingEnabled={true}>
         <View style={styles.result}>
           <LoanItemResult
             itemWhiteLeft="Off The Road Price"
@@ -432,12 +376,48 @@ class LoanCalculator extends Component {
             itemColorRight="170.000.000"
           />
         </View>
-      </ScrollView> 
+        <View style={styles.result}>
+          <LoanItemResult
+            itemWhiteLeft="Off The Road Price"
+            itemWhiteRight="120.000.000"
+            itemColorLeft="Down Payment"
+            itemColorRight="20.000.000"
+          />
+          <LoanItemResult
+            itemWhiteLeft="Principal"
+            itemWhiteRight="180.000.000"
+            itemColorLeft="Insurance Premi"
+            itemColorRight="1.500.000"
+          />
+          <LoanItemResult
+            itemWhiteLeft="Interest"
+            itemWhiteRight="10.000.000"
+            itemColorLeft="Principal+interest"
+            itemColorRight="190.000.000"
+          />
+          <LoanItemResult
+            itemWhiteLeft="tenor (month)"
+            itemWhiteRight="24"
+            itemColorLeft="Installment"
+            itemColorRight="5.300.000"
+          />
+          <LoanItemResult
+            itemWhiteLeft="Admin Fee"
+            itemWhiteRight="500.000"
+            itemColorLeft="Provisi"
+            itemColorRight="500.000"
+          />
+          <LoanItemResult
+            itemWhiteLeft="Discon"
+            itemWhiteRight="5.000.000"
+            itemColorLeft="Total Disburse"
+            itemColorRight="170.000.000"
+          />
+        </View>
+      </ScrollView>
     </ScrollView>
-  
-    )
-  }
-}
+  );
+};
 
 export default LoanCalculator;
 

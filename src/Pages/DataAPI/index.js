@@ -1,3 +1,8 @@
+import { _wsJsonConnectionHTTP } from '../../fungsi/function';
+
+_wsJsonConnectionHTTP("tenor_list","",(a) => {
+  console.log(a);
+});
 export default DataAPI = {
   tenor: {
     1: '1',
