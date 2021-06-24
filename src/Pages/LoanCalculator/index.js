@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { _wsJsonConnectionHTTP } from '../../fungsi/function';
+import Autocomplete from 'react-native-autocomplete-input';
 
 const LoanTitle = (props) => {
   return (
@@ -49,13 +50,15 @@ class LoanCalculator extends Component {
       p_vehiclekondisi :"0",
       p_vehiclekategory :"0",
       p_region :"0",
+      p_merk :"0",
 
        arr_tenor : [],
        arr_type : [],
        arr_vehiclekondisi : [],
        arr_vehicletype : [],
        arr_vehiclecategory : [],
-       arr_region : []
+       arr_region : [],
+       arr_merek : []
     }
   }
   componentDidMount(){
@@ -66,12 +69,15 @@ class LoanCalculator extends Component {
       arr_vehiclekondisi:data.p_vehiclekondisi,
       arr_vehicletype:data.p_vehicletype,
       arr_vehiclecategory:data.p_vehiclekategory,
-      arr_region:data.p_region
+      arr_region:data.p_region,
+      arr_merek:data.p_merk
     })  
     });
   }
   
   render() {
+    // const {query} = this.state;
+    // const data = filterData(query);
     return (
       <ScrollView style={styles.container}>
       <Text style={styles.textInfo}>Loan Information</Text>
@@ -236,10 +242,20 @@ class LoanCalculator extends Component {
         <LoanTitle title1="Merk" title2="Model" />
         <View style={styles.BoxContent}>
           <View style={styles.action}>
-            <Picker style={styles.dropdown} mode="dropdown">
-              <Picker.Item label="select one" value="" />
-              <Picker.Item label="Arrear" value="Ar" />
-              <Picker.Item label="Advance" value="Ad" />
+          <Picker style={styles.dropdown} mode="dropdown"
+            selectedValue={this.state.p_merk}
+            onValueChange={(value,index)=>this.setState({p_merk:value  })}>
+            <Picker.Item label="select one" value="0" />
+            {this.state.arr_merek.map((d,i) => {
+              return (
+                <Picker.Item
+                  label={d.label}
+                  value={d.value}
+                  key={i}
+                />
+              ); //if you have a bunch of keys value pair
+            })}
+              
             </Picker>
           </View>
           <View style={styles.action}>

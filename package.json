@@ -10,21 +10,22 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/masked-view": "^0.1.10",
-    "@react-native-picker/picker": "^1.9.11",
-    "@react-navigation/native": "^5.9.3",
-    "@react-navigation/stack": "^5.14.3",
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-picker/picker": "^1.16.1",
+    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/stack": "^5.14.5",
     "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react-native": "^0.64.2",
+    "react-native-autocomplete-input": "^5.0.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-imei": "^0.2.0",
-    "react-native-reanimated": "^1.13.2",
-    "react-native-safe-area-context": "^3.1.9",
-    "react-native-screens": "^2.18.0"
+    "react-native-reanimated": "^2.2.0",
+    "react-native-safe-area-context": "^3.2.0",
+    "react-native-screens": "^2.18.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/runtime": "^7.8.4",
+    "@babel/core": "^7.14.5",
+    "@babel/runtime": "^7.14.5",
     "@react-native-community/eslint-config": "^1.1.0",
     "babel-jest": "^25.1.0",
     "eslint": "^6.5.1",
