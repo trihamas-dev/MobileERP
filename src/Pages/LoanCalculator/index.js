@@ -95,6 +95,22 @@ class LoanCalculator extends Component {
     //set value dropdown model '0'
   }
 
+  onchange_type(value, index) {
+    this.setState({ p_type: value });
+
+    //get data di API untuk model dengan value merk diatas "set_carmodel_list"
+    _wsJsonConnectionHTTP("set_cartype_list", "carmerk_id=" + value+"carmodel_id="+p_model.value, (arr) => {
+      this.setState({
+        p_model: "0",
+        arr_model: [],
+        p_type: "0",
+        arr_type: arr
+      })
+    });
+    //masukan ke array dropdown model
+    //set value dropdown model '0'
+  }
+
   render() {
     // const {query} = this.state;
     // const data = filterData(query);
@@ -279,10 +295,20 @@ class LoanCalculator extends Component {
               </Picker>
             </View>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+            <Picker style={styles.dropdown} mode="dropdown"
+                selectedValue={this.state.p_model}
+                onValueChange={(value, index) => this.onchange_merk(value, index)}>
+                <Picker.Item label="select one" value="0" />
+                {this.state.arr_model.map((d, i) => {
+                  return (
+                    <Picker.Item
+                      label={d.label}
+                      value={d.value}
+                      key={i}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
+
               </Picker>
             </View>
           </View>
@@ -297,10 +323,20 @@ class LoanCalculator extends Component {
               />
             </View>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+            <Picker style={styles.dropdown} mode="dropdown"
+                selectedValue={this.state.p_type}
+                onValueChange={(value, index) => this.onchange_type(value, index)}>
+                <Picker.Item label="select one" value="0" />
+                {this.state.arr_type.map((d, i) => {
+                  return (
+                    <Picker.Item
+                      label={d.label}
+                      value={d.value}
+                      key={i}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
+
               </Picker>
             </View>
           </View>
