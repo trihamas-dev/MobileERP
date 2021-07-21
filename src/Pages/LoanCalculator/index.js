@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import {
+  Alert,
   Dimensions,
   ScrollView,
   StyleSheet,
@@ -51,8 +52,13 @@ class LoanCalculator extends Component {
       p_vehiclekategory: "0",
       p_region: "0",
       p_merk: "0",
+      p_year: "0",
+      p_instype: "0",
+      p_usedfor: "0",
+      p_insstatus: "0",
+
       p_model: "0",
-      p_type: "0",
+      p_cartype: "0",
 
       arr_tenor: [],
       arr_type: [],
@@ -61,8 +67,13 @@ class LoanCalculator extends Component {
       arr_vehiclecategory: [],
       arr_region: [],
       arr_merek: [],
+      arr_year: [],
+      arr_instype: [],
+      arr_usedfor: [],
+      arr_insstatus: [],
+
       arr_model: [],
-      arr_type: []
+      arr_cartype: []
     }
   }
   componentDidMount() {
@@ -74,7 +85,11 @@ class LoanCalculator extends Component {
         arr_vehicletype: data.p_vehicletype,
         arr_vehiclecategory: data.p_vehiclekategory,
         arr_region: data.p_region,
-        arr_merek: data.p_merk
+        arr_merek: data.p_merk,
+        arr_year: data.p_years,
+        arr_instype: data.p_instypes,
+        arr_usedfor: data.p_usedfors,
+        arr_insstatus: data.p_insstatuss
       })
     });
   }
@@ -82,13 +97,28 @@ class LoanCalculator extends Component {
   onchange_merk(value, index) {
     this.setState({ p_merk: value });
 
+
     //get data di API untuk model dengan value merk diatas "set_carmodel_list"
     _wsJsonConnectionHTTP("set_carmodel_list", "carmerk_id=" + value, (arr) => {
       this.setState({
         p_model: "0",
         arr_model: arr,
-        p_type: "0",
-        arr_type: []
+        p_cartype: "0",
+        arr_cartype: []
+      })
+    });
+    //masukan ke array dropdown model
+    //set value dropdown model '0'
+  }
+
+  onchange_model(value, index) {
+    this.setState({ p_model: value });
+    // Alert.alert("Info",this.state.p_merk);
+    //get data di API untuk model dengan value merk diatas "set_carmodel_list"
+    _wsJsonConnectionHTTP("set_cartype_list", "carmerk_id=" + this.state.p_merk + "&carmodel_id=" + value, (arr) => {
+      this.setState({
+        p_cartype: "0",
+        arr_cartype: arr
       })
     });
     //masukan ke array dropdown model
@@ -96,19 +126,7 @@ class LoanCalculator extends Component {
   }
 
   onchange_type(value, index) {
-    this.setState({ p_type: value });
-
-    //get data di API untuk model dengan value merk diatas "set_carmodel_list"
-    _wsJsonConnectionHTTP("set_cartype_list", "carmerk_id=" + value+"carmodel_id="+p_model.value, (arr) => {
-      this.setState({
-        p_model: "0",
-        arr_model: [],
-        p_type: "0",
-        arr_type: arr
-      })
-    });
-    //masukan ke array dropdown model
-    //set value dropdown model '0'
+    this.setState({ p_cartype: value });
   }
 
   render() {
@@ -159,32 +177,15 @@ class LoanCalculator extends Component {
             </View>
           </View>
 
-          <LoanTitle title1="Admin Fee" title2="Down Payment" />
+          <LoanTitle title1="Wilayah" title2="" />
           <View style={styles.BoxContent}>
-            <View style={styles.actionInput}>
-              <TextInput
-                style={styles.Input}
-                placeholder="0"
-                keyboardType="numeric"
-              />
-            </View>
-            <View style={styles.actionInput}>
-              <TextInput
-                style={styles.Input}
-                placeholder="0"
-                keyboardType="numeric"
-              />
-            </View>
-          </View>
-          <LoanTitle title1="Margin Rate" title2="Wilayah" />
-          <View style={styles.BoxContent}>
-            <View style={styles.actionInput}>
+            {/* <View style={styles.actionInput}>
               <TextInput
                 style={styles.Input}
                 placeholder="0"
                 keyboardType="decimal-pad"
               />
-            </View>
+            </View> */}
             <View style={styles.action}>
               <Picker
                 style={styles.dropdown}
@@ -204,6 +205,27 @@ class LoanCalculator extends Component {
               </Picker>
             </View>
           </View>
+
+          {/* <LoanTitle title1="Admin Fee" title2="Down Payment" />
+          <View style={styles.BoxContent}>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input}
+                placeholder="0"
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input}
+                placeholder="0"
+                keyboardType="numeric"
+              />
+            </View>
+          </View> */}
+
+          
+
         </View>
         <Text style={styles.textInfo}>Assets Information</Text>
         <View style={styles.header}>
@@ -214,9 +236,9 @@ class LoanCalculator extends Component {
                 style={styles.dropdown}
                 mode="dropdown"
                 selectedValue={this.state.p_vehiclekategory}
-                onValueChange={(value, index) => this.setState({ p_vehiclekategory: value })}>
+                onValueChange={(value, index) => this.setState({ p_usedfor: value })}>
                 <Picker.Item label="select one" value="0" />
-                {this.state.arr_vehiclecategory.map((d, i) => {
+                {this.state.arr_usedfor.map((d, i) => {
                   return (
                     <Picker.Item
                       label={d.label}
@@ -267,10 +289,20 @@ class LoanCalculator extends Component {
               </Picker>
             </View>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="Arrear" value="Ar" />
-                <Picker.Item label="Advance" value="Ad" />
+              <Picker style={styles.dropdown} mode="dropdown"
+                selectedValue={this.state.p_vehicletype}
+                onValueChange={(value, index) => this.setState({ p_vehiclekategory: value })}>
+                <Picker.Item label="select one" value="0" />
+                {this.state.arr_vehiclecategory.map((d, i) => {
+                  return (
+                    <Picker.Item
+                      label={d.label}
+                      value={d.value}
+                      key={i}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
+
               </Picker>
             </View>
           </View>
@@ -295,9 +327,9 @@ class LoanCalculator extends Component {
               </Picker>
             </View>
             <View style={styles.action}>
-            <Picker style={styles.dropdown} mode="dropdown"
+              <Picker style={styles.dropdown} mode="dropdown"
                 selectedValue={this.state.p_model}
-                onValueChange={(value, index) => this.onchange_merk(value, index)}>
+                onValueChange={(value, index) => this.onchange_model(value, index)}>
                 <Picker.Item label="select one" value="0" />
                 {this.state.arr_model.map((d, i) => {
                   return (
@@ -316,18 +348,28 @@ class LoanCalculator extends Component {
           <LoanTitle title1="Built Year" title2="Unit Type" />
           <View style={styles.BoxContent}>
             <View style={styles.actionInput}>
-              <TextInput
-                style={styles.Input}
-                placeholder="0000"
-                keyboardType="numeric"
-              />
+              <Picker style={styles.dropdown} mode="dropdown"
+                selectedValue={this.state.p_year}
+                onValueChange={(value, index) => this.setState({ p_year: value })}>
+                <Picker.Item label="select one" value="0" />
+                {this.state.arr_year.map((d, i) => {
+                  return (
+                    <Picker.Item
+                      label={d.label}
+                      value={d.value}
+                      key={i}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
+
+              </Picker>
             </View>
             <View style={styles.action}>
-            <Picker style={styles.dropdown} mode="dropdown"
+              <Picker style={styles.dropdown} mode="dropdown"
                 selectedValue={this.state.p_type}
                 onValueChange={(value, index) => this.onchange_type(value, index)}>
                 <Picker.Item label="select one" value="0" />
-                {this.state.arr_type.map((d, i) => {
+                {this.state.arr_cartype.map((d, i) => {
                   return (
                     <Picker.Item
                       label={d.label}
@@ -362,7 +404,8 @@ class LoanCalculator extends Component {
               </Picker>
             </View>
           </View>
-          <LoanTitle title1="Rate Margin" title2="Type" />
+
+          {/* <LoanTitle title1="Rate Margin" title2="Type" />
           <View style={styles.BoxContent}>
             <View style={styles.action}>
               <Picker style={styles.dropdown} mode="dropdown">
@@ -378,8 +421,10 @@ class LoanCalculator extends Component {
                 <Picker.Item label="Advance" value="Ad" />
               </Picker>
             </View>
-          </View>
+          </View> */}
+
         </View>
+        
         <TouchableOpacity
           style={styles.boxbutton}
           onPress={() => alert('function is not ready !')}>
@@ -549,7 +594,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
     borderBottomColor: '#22A2B4',
     marginBottom: 15,
-    height: 25,
+    height: 45,
     width: '50%',
     marginHorizontal: 5,
   },
@@ -560,7 +605,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: '50%',
     marginHorizontal: 5,
-    height: 25,
+    height: 45,
   },
   dropdown: {
     flex: 1,
