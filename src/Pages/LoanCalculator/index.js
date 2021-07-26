@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ToastAndroid
 } from 'react-native';
 import { _wsJsonConnectionHTTP } from '../../fungsi/function';
 import Autocomplete from 'react-native-autocomplete-input';
@@ -73,7 +74,17 @@ class LoanCalculator extends Component {
       arr_insstatus: [],
 
       arr_model: [],
-      arr_cartype: []
+      arr_cartype: [],
+
+      p_defotr: "0",
+      p_otr: "0",
+      p_rate: "0",
+      p_sprate: "7",
+      p_insrate: "0",
+      p_provisi: "3",
+      p_ph: "0",
+
+      rate: 0, insrate: 0, otr: 0, ph: 0, arr_rateins_amortisasi: []
     }
   }
   componentDidMount() {
@@ -94,6 +105,22 @@ class LoanCalculator extends Component {
     });
   }
 
+  set_ph() {
+    // Alert.alert("Info","carmerk_id=" + this.state.p_merk + "&carmodel_id=" + this.state.p_model + "&cartype_id=" + this.state.p_cartype +
+    // "&caryear=" + this.state.p_year + "&vehiclecondition_id=" + this.state.p_vehiclekondisi + "&vehiclecategory_id=" + this.state.p_vehiclekategory +
+    // "&region_id=" + this.state.p_region);
+    _wsJsonConnectionHTTP("get_ph",
+      "carmerk_id=" + this.state.p_merk + "&carmodel_id=" + this.state.p_model + "&cartype_id=" + this.state.p_cartype +
+      "&caryear=" + this.state.p_year + "&vehiclecondition_id=" + this.state.p_vehiclekondisi + "&vehiclecategory_id=" + this.state.p_vehiclekategory +
+      "&region_id=" + this.state.p_region,
+      (d) => {
+        //Alert.alert("info",d.value.toString());
+        this.setState({
+          p_defotr: d.value.toString()
+        })
+      });
+  }
+
   onchange_merk(value, index) {
     this.setState({ p_merk: value });
 
@@ -106,6 +133,8 @@ class LoanCalculator extends Component {
         p_cartype: "0",
         arr_cartype: []
       })
+
+      this.set_ph();
     });
     //masukan ke array dropdown model
     //set value dropdown model '0'
@@ -120,6 +149,8 @@ class LoanCalculator extends Component {
         p_cartype: "0",
         arr_cartype: arr
       })
+
+      this.set_ph();
     });
     //masukan ke array dropdown model
     //set value dropdown model '0'
@@ -127,6 +158,39 @@ class LoanCalculator extends Component {
 
   onchange_type(value, index) {
     this.setState({ p_cartype: value });
+    this.set_ph();
+  }
+
+  onchange_year(value) {
+    this.setState({ p_year: value })
+    this.set_ph();
+  }
+
+  getdata() {
+    ToastAndroid.show("Proses data...", ToastAndroid.SHORT);
+
+    _wsJsonConnectionHTTP("get_calculator2",
+      "carmerk_id=" + this.state.p_merk + "&carmodel_id=" + this.state.p_model + "&cartype_id=" + this.state.p_cartype +
+      "&caryear=" + this.state.p_year + "&vehiclecondition_id=" + this.state.p_vehiclekondisi + "&vehiclecategory_id=" + this.state.p_vehiclekategory +
+      "&region_id=" + this.state.p_region + "&tenor=" + this.state.p_tenor + "&instype_id=" + this.state.p_instype +
+      "&usedfor_id=" + this.state.p_usedfor + "&vehicletype_id=" + this.state.p_vehicletype+"&instatus_id="+this.state.p_insstatus,
+      (d) => {
+        this.setState({
+          p_defotr: d.otr.toString(),
+          p_otr: 0,
+          p_rate: d.rate.toString(),
+          p_sprate: "0",
+          p_insrate: d.insrate.toString(),
+          p_provisi: "0",
+          p_ph: d.ph.toString(),
+
+          rate: d.rate, insrate: d.insrate, otr: d.otr, ph: d.ph, arr_rateins_amortisasi: d.arr_rateins_amortisasi
+          
+        })
+
+        this.set_ph();
+      });
+
   }
 
   render() {
@@ -224,7 +288,7 @@ class LoanCalculator extends Component {
             </View>
           </View> */}
 
-          
+
 
         </View>
         <Text style={styles.textInfo}>Assets Information</Text>
@@ -350,7 +414,7 @@ class LoanCalculator extends Component {
             <View style={styles.actionInput}>
               <Picker style={styles.dropdown} mode="dropdown"
                 selectedValue={this.state.p_year}
-                onValueChange={(value, index) => this.setState({ p_year: value })}>
+                onValueChange={(value, index) => this.onchange_year(value)}>
                 <Picker.Item label="select one" value="0" />
                 {this.state.arr_year.map((d, i) => {
                   return (
@@ -378,7 +442,6 @@ class LoanCalculator extends Component {
                     />
                   ); //if you have a bunch of keys value pair
                 })}
-
               </Picker>
             </View>
           </View>
@@ -390,17 +453,35 @@ class LoanCalculator extends Component {
           <LoanTitle title1="Status" title2="Insurance Type" />
           <View style={styles.BoxContent}>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="insurance" value="0" />
-                <Picker.Item label="non insurance" value="1" />
+              <Picker style={styles.dropdown} mode="dropdown"
+                selectedValue={this.state.p_insstatus}
+                onValueChange={(value, index) => this.setState({ p_insstatus: value })}>
+                <Picker.Item label="select one" value="0" />
+                {this.state.arr_insstatus.map((d, i) => {
+                  return (
+                    <Picker.Item
+                      label={d.label}
+                      value={d.value}
+                      key={i}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
               </Picker>
             </View>
             <View style={styles.action}>
-              <Picker style={styles.dropdown} mode="dropdown">
-                <Picker.Item label="select one" value="" />
-                <Picker.Item label="All Risk" value="AT" />
-                <Picker.Item label="TLO" value="TLO" />
+              <Picker style={styles.dropdown} mode="dropdown"
+                selectedValue={this.state.p_instype}
+                onValueChange={(value, index) => this.setState({ p_instype: value })}>
+                <Picker.Item label="select one" value="0" />
+                {this.state.arr_instype.map((d, i) => {
+                  return (
+                    <Picker.Item
+                      label={d.label}
+                      value={d.value}
+                      key={i}
+                    />
+                  ); //if you have a bunch of keys value pair
+                })}
               </Picker>
             </View>
           </View>
@@ -424,11 +505,86 @@ class LoanCalculator extends Component {
           </View> */}
 
         </View>
-        
+
+        <TouchableOpacity
+          style={styles.boxbutton}
+          onPress={() => this.getdata()}>
+          <Text style={styles.textButton}>Submit</Text>
+        </TouchableOpacity>
+
+        {/* Default Entry */}
+        <Text style={styles.textInfo}>Entry</Text>
+        <View style={styles.header}>
+          <LoanTitle title1="Def.OTR" title2="OTR" />
+          <View style={styles.BoxContent}>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                editable={false}
+                value={this.state.p_defotr}
+              />
+            </View>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
+          <LoanTitle title1="Rate" title2="Sp.Rate" />
+          <View style={styles.BoxContent}>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                editable={false}
+                value={this.state.p_rate}
+              />
+            </View>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                value={this.state.p_sprate}
+              />
+            </View>
+          </View>
+
+          <LoanTitle title1="Ins.Rate" title2="Provisi" />
+          <View style={styles.BoxContent}>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                editable={false}
+                value={this.state.p_insrate}
+              />
+            </View>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                value={this.state.p_provisi}
+              />
+            </View>
+          </View>
+
+        </View>
+
+
+
         <TouchableOpacity
           style={styles.boxbutton}
           onPress={() => alert('function is not ready !')}>
-          <Text style={styles.textButton}>Calculate</Text>
+          <Text style={styles.textButton}>Priview</Text>
         </TouchableOpacity>
 
         <View style={styles.garis} />
@@ -613,7 +769,8 @@ const styles = StyleSheet.create({
     color: '#A48E8E',
   },
   Input: {
-    color: '#A48E8E',
+    // color: '#A48E8E',
+    color: '#4F4F4F',
     fontSize: 12,
     backgroundColor: 'transparent',
 
