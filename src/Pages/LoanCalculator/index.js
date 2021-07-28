@@ -84,10 +84,19 @@ class LoanCalculator extends Component {
       p_provisi: "3",
       p_ph: "0",
 
+      p_message: "",
+
       rate: 0, insrate: 0, otr: 0, ph: 0, arr_rateins_amortisasi: []
     }
   }
   componentDidMount() {
+    // ToastAndroid.show("Selamat Datang "+this.props.route.params.email_id, ToastAndroid.SHORT);
+    ToastAndroid.showWithGravity(
+      "Selamat Datang " + this.props.route.params.email_id,
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER
+    );
+
     _wsJsonConnectionHTTP("loancalculator_data", "", (data) => {
       this.setState({
         arr_tenor: data.p_tenor,
@@ -134,7 +143,7 @@ class LoanCalculator extends Component {
         arr_cartype: []
       })
 
-      this.set_ph();
+      //this.set_ph();
     });
     //masukan ke array dropdown model
     //set value dropdown model '0'
@@ -150,7 +159,7 @@ class LoanCalculator extends Component {
         arr_cartype: arr
       })
 
-      this.set_ph();
+      //this.set_ph();
     });
     //masukan ke array dropdown model
     //set value dropdown model '0'
@@ -158,38 +167,50 @@ class LoanCalculator extends Component {
 
   onchange_type(value, index) {
     this.setState({ p_cartype: value });
-    this.set_ph();
+    //this.set_ph();
   }
 
   onchange_year(value) {
     this.setState({ p_year: value })
-    this.set_ph();
+    //this.set_ph();
   }
 
   getdata() {
-    ToastAndroid.show("Proses data...", ToastAndroid.SHORT);
+    ToastAndroid.show("Loading data...", ToastAndroid.SHORT);
+    let sprate = parseFloat(this.state.p_sprate) / 100;
+    let provisi = parseFloat(this.state.p_provisi) / 100;
 
-    _wsJsonConnectionHTTP("get_calculator2",
-      "carmerk_id=" + this.state.p_merk + "&carmodel_id=" + this.state.p_model + "&cartype_id=" + this.state.p_cartype +
+    let str_param = "carmerk_id=" + this.state.p_merk + "&carmodel_id=" + this.state.p_model + "&cartype_id=" + this.state.p_cartype +
       "&caryear=" + this.state.p_year + "&vehiclecondition_id=" + this.state.p_vehiclekondisi + "&vehiclecategory_id=" + this.state.p_vehiclekategory +
       "&region_id=" + this.state.p_region + "&tenor=" + this.state.p_tenor + "&instype_id=" + this.state.p_instype +
-      "&usedfor_id=" + this.state.p_usedfor + "&vehicletype_id=" + this.state.p_vehicletype+"&instatus_id="+this.state.p_insstatus,
-      (d) => {
-        this.setState({
-          p_defotr: d.otr.toString(),
-          p_otr: 0,
-          p_rate: d.rate.toString(),
-          p_sprate: "0",
-          p_insrate: d.insrate.toString(),
-          p_provisi: "0",
-          p_ph: d.ph.toString(),
+      "&usedfor_id=" + this.state.p_usedfor + "&vehicletype_id=" + this.state.p_vehicletype + "&instatus_id=" + this.state.p_insstatus+
+      "&sprate="+sprate.toString()+"&provisi="+provisi.toString()+"&loantype_id="+this.state.p_type;
 
-          rate: d.rate, insrate: d.insrate, otr: d.otr, ph: d.ph, arr_rateins_amortisasi: d.arr_rateins_amortisasi
-          
-        })
+    this.setState({ p_message: str_param });
 
-        this.set_ph();
-      });
+    str_param = "carmerk_id=9&carmodel_id=96&cartype_id=924&caryear=2010&vehiclecondition_id=1&vehiclecategory_id=2&region_id=1&tenor=3&instype_id=2&usedfor_id=1&vehicletype_id=5&instatus_id=1&sprate=0.07&provisi=0.03&loantype_id=1";
+
+    this.props.navigation.navigate('result', { param: str_param, sprate: this.state.p_sprate, provisi: this.state.p_provisi });
+
+    // _wsJsonConnectionHTTP("get_calculator2",
+    //   str_param,
+    //   (d) => {
+    //     this.setState({
+    //       p_defotr: d.otr.toString(),
+    //       p_otr: 0,
+    //       p_rate: d.rate.toString(),
+    //       //p_sprate: "0",
+    //       p_insrate: d.insrate.toString(),
+    //       //p_provisi: "0",
+    //       p_ph: d.ph.toString(),
+
+    //       rate: d.rate, insrate: d.insrate, otr: d.otr, ph: d.ph, arr_rateins_amortisasi: d.arr_rateins_amortisasi
+
+    //     })
+
+    //     //this.set_ph();
+
+    //   });
 
   }
 
@@ -267,6 +288,26 @@ class LoanCalculator extends Component {
                   ); //if you have a bunch of keys value pair
                 })}
               </Picker>
+            </View>
+          </View>
+
+          <LoanTitle title1="SP.Rate" title2="Provisi" />
+          <View style={styles.BoxContent}>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                value={this.state.p_sprate}
+              />
+            </View>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                value={this.state.p_provisi}
+              />
             </View>
           </View>
 
@@ -506,14 +547,19 @@ class LoanCalculator extends Component {
 
         </View>
 
+
         <TouchableOpacity
           style={styles.boxbutton}
           onPress={() => this.getdata()}>
           <Text style={styles.textButton}>Submit</Text>
         </TouchableOpacity>
 
+        {/* <View>
+          <TextInput value={this.state.p_message}></TextInput>
+        </View> */}
+
         {/* Default Entry */}
-        <Text style={styles.textInfo}>Entry</Text>
+        {/* <Text style={styles.textInfo}>Rate Information</Text>
         <View style={styles.header}>
           <LoanTitle title1="Def.OTR" title2="OTR" />
           <View style={styles.BoxContent}>
@@ -535,7 +581,7 @@ class LoanCalculator extends Component {
             </View>
           </View>
 
-          <LoanTitle title1="Rate" title2="Sp.Rate" />
+          <LoanTitle title1="Rate" title2="Ins.Rate" />
           <View style={styles.BoxContent}>
             <View style={styles.actionInput}>
               <TextInput
@@ -551,37 +597,19 @@ class LoanCalculator extends Component {
                 style={styles.Input, { textAlign: 'right' }}
                 placeholder="0"
                 keyboardType="numeric"
-                value={this.state.p_sprate}
-              />
-            </View>
-          </View>
-
-          <LoanTitle title1="Ins.Rate" title2="Provisi" />
-          <View style={styles.BoxContent}>
-            <View style={styles.actionInput}>
-              <TextInput
-                style={styles.Input, { textAlign: 'right' }}
-                placeholder="0"
-                keyboardType="numeric"
                 editable={false}
                 value={this.state.p_insrate}
               />
             </View>
-            <View style={styles.actionInput}>
-              <TextInput
-                style={styles.Input, { textAlign: 'right' }}
-                placeholder="0"
-                keyboardType="numeric"
-                value={this.state.p_provisi}
-              />
-            </View>
+
           </View>
 
-        </View>
+
+        </View> */}
 
 
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.boxbutton}
           onPress={() => alert('function is not ready !')}>
           <Text style={styles.textButton}>Priview</Text>
@@ -705,7 +733,7 @@ class LoanCalculator extends Component {
               itemColorRight="170.000.000"
             />
           </View>
-        </ScrollView>
+        </ScrollView> */}
       </ScrollView>
 
     )

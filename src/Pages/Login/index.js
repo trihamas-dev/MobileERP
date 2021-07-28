@@ -71,7 +71,8 @@ class Login extends Component {
         _wsJsonConnectionHTTP("dat_email_login", "email_name=" + this.state.email + "&pin=" + this.state.pass, (d) => {
             if (d.value == "accept") {
                 storeData(this.state.email, this.state.pass);
-                this.props.navigation.navigate('LoanCalculator');
+                //this.props.navigation.navigate('LoanCalculator');
+                this.props.navigation.navigate('LoanCalculator', { email_id: this.state.email });
             } else Alert.alert("Error", "Email tidak terdaftar atau Pin Salah");
         });
     }
