@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, ToastAndroid, ScrollView, StyleSheet, Dimensions } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler';
-import { _wsJsonConnectionHTTP } from '../../fungsi/function';
+import { _format_numeric, _wsJsonConnectionHTTP } from '../../fungsi/function';
 
 const ResultTitle = (props) => {
     return (
@@ -32,48 +32,34 @@ export default class result extends Component {
         super(props)
 
         this.state = {
-            param: "",
-            p_otr: "0",
-            p_otr: "0",
             p_rate: "0",
-            p_insrate: "0",
-            p_ph: "0",
-
             p_sprate: "0",
             p_provisi: "0",
 
-            rate: 0, insrate: 0, otr: 0, ph: 0, arr_rateins_amortisasi: []
+            arr_loan: []
         }
     }
 
     componentDidMount() {
-        //ToastAndroid.show(this.props.route.params.param,ToastAndroid.SHORT);
-        //this.setState({ param: this.props.route.params.param });
         _wsJsonConnectionHTTP("get_calculator2",
             this.props.route.params.param,
             (d) => {
                 this.setState({
-                    p_otr: d.otr.toString(),
-                    p_otr: 0,
-                    p_rate: d.rate.toString(),
-                    p_insrate: d.insrate.toString(),
-                    p_ph: d.ph.toString(),
-
-                    p_sprate: this.props.route.params.sprate,
-                    p_provisi: this.props.route.params.provisi,
-
-                    rate: d.rate, insrate: d.insrate, otr: d.otr, ph: d.ph, arr_rateins_amortisasi: d.arr_rateins_amortisasi
-
-                })
-
-                //this.set_ph();
+                    p_rate: (d.rate * 100).toFixed(2) + "%",
+                    p_sprate: (d.sprate * 100).toFixed(2) + "%",
+                    p_provisi: (d.provrate * 100).toFixed(2) + "%",
+                    arr_loan: d.arr_loan
+                });
 
             });
     }
     render() {
         return (
             <ScrollView style={styles.container}>
-                {/* <Text> {this.state.param} </Text> */}
+                {/* <TextInput
+                    style={styles.Input}
+                    value={this.props.route.params.param}
+                /> */}
                 <Text style={styles.textInfo}>Loan Information</Text>
                 <View style={styles.header}>
                     <ResultTitle title1="Rate" title2="SP.Rate" title3="Provisi"></ResultTitle>
@@ -108,36 +94,26 @@ export default class result extends Component {
                 </View>
                 <Text style={styles.textInfo}>Estimation Result Loan</Text>
                 <ScrollView horizontal pagingEnabled={true}>
-                    <View style={styles.result}>
-                        <LoanItemResult _title="Tenor" _value="1"></LoanItemResult>
-                        <LoanItemResult _title="OTR" _value="100.000.000"></LoanItemResult>
-                        <LoanItemResult _title="DP" _value="20.000.000"></LoanItemResult>
-                        <LoanItemResult _title="PH" _value="80.000.000"></LoanItemResult>
-                        <LoanItemResult _title="Premi Asuransi" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Bunga" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Pokok + Bunga" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Jangka Waktu" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Angsuran" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Administrasi" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Angsuran I" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Provisi" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Total Potongan" _value="0"></LoanItemResult>
-                        <LoanItemResult _title="Total Dana Cair" _value="0"></LoanItemResult>
-                    </View>
-
-                    <View style={styles.result}>
-                        <LoanItemResult _title="Tenor" _value="2"></LoanItemResult>
-                        <LoanItemResult _title="OTR" _value="100.000.000"></LoanItemResult>
-                        <LoanItemResult _title="DP" _value="20.000.000"></LoanItemResult>
-                        <LoanItemResult _title="PH" _value="80.000.000"></LoanItemResult>
-                    </View>
-
-                    <View style={styles.result}>
-                        <LoanItemResult _title="Tenor" _value="3"></LoanItemResult>
-                        <LoanItemResult _title="OTR" _value="100.000.000"></LoanItemResult>
-                        <LoanItemResult _title="DP" _value="20.000.000"></LoanItemResult>
-                        <LoanItemResult _title="PH" _value="80.000.000"></LoanItemResult>
-                    </View>
+                    {this.state.arr_loan.map((d, i) => {
+                        return (
+                            <View style={styles.result} key={i}>
+                                <LoanItemResult _title="Tenor" _value={d.tenor.toString()}></LoanItemResult>
+                                <LoanItemResult _title="OTR" _value={_format_numeric(d.otr)}></LoanItemResult>
+                                <LoanItemResult _title="DP" _value={_format_numeric(d.dp)}></LoanItemResult>
+                                <LoanItemResult _title="PH" _value={_format_numeric(d.ph)}></LoanItemResult>
+                                <LoanItemResult _title="Premi Asuransi" _value={_format_numeric(d.premi_asuransi)}></LoanItemResult>
+                                <LoanItemResult _title={"Bunga ("+(d.rate*100).toFixed(2)+"%)"} _value={_format_numeric(d.bunga)}></LoanItemResult>
+                                <LoanItemResult _title="Pokok + Bunga" _value={_format_numeric(d.pokokbunga)}></LoanItemResult>
+                                <LoanItemResult _title="Jangka Waktu (Bulan)" _value={_format_numeric(d.jangka_waktu)}></LoanItemResult>
+                                <LoanItemResult _title="Angsuran" _value={_format_numeric(d.angsuran)}></LoanItemResult>
+                                <LoanItemResult _title="Administrasi" _value={_format_numeric(d.admin)}></LoanItemResult>
+                                <LoanItemResult _title="Angsuran I" _value={_format_numeric(d.angsuran1)}></LoanItemResult>
+                                <LoanItemResult _title="Provisi" _value={_format_numeric(d.provisi)}></LoanItemResult>
+                                <LoanItemResult _title="Total Potongan" _value={_format_numeric(d.total_potongan)}></LoanItemResult>
+                                <LoanItemResult _title="Total Dana Cair" _value={_format_numeric(d.dana_cair)}></LoanItemResult>
+                            </View>
+                        );
+                    })}
                 </ScrollView>
             </ScrollView>
 
@@ -296,7 +272,7 @@ const styles = StyleSheet.create({
             height: 3,
         },
         elevation: 4,
-        width: Dimensions.get('window').width-20,
+        width: Dimensions.get('window').width - 20,
     },
     textInfo: {
         color: 'black',

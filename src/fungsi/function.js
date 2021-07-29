@@ -62,3 +62,19 @@ export async function _httpconnection(wsName, bodyParam) {
     }
     
 }
+
+export function _format_numeric(value, fixedValue) {
+    var _value;
+
+    if(typeof(value)=="number"){
+        _value=value.toString();
+    }else if(typeof(value)=="string"){
+        _value=value;
+    }else{
+        return "";
+    }
+    
+    var _fixedValue = (fixedValue == undefined) ? 0 : fixedValue;
+    var nilai = parseFloat(_value.replace(/,/g, ""));
+    return nilai.toFixed(_fixedValue).replace(/(\d)(?=(\d{3})+\b)/g, '$1,');
+}

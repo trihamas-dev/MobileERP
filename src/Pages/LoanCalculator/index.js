@@ -85,6 +85,8 @@ class LoanCalculator extends Component {
       p_ph: "0",
 
       p_message: "",
+      p_iotr: "0",
+      p_idp: "0",
 
       rate: 0, insrate: 0, otr: 0, ph: 0, arr_rateins_amortisasi: []
     }
@@ -175,43 +177,50 @@ class LoanCalculator extends Component {
     //this.set_ph();
   }
 
+  input_validation() {
+    if (this.state.p_type == "0" ||
+      this.state.p_tenor == "0" ||
+      this.state.p_region == "0" ||
+      this.state.p_sprate == "" ||
+      this.state.p_provisi == "" ||
+      this.state.p_iotr == "" ||
+      this.state.p_idp == "" ||
+      this.state.p_usedfor == "0" ||
+      this.state.p_vehiclekondisi == "0" ||
+      this.state.p_vehicletype == "0" ||
+      this.state.p_vehiclekategory == "0" ||
+      this.state.p_merk == "0" ||
+      this.state.p_model == "0" ||
+      this.state.p_year == "0" ||
+      this.state.p_type == "0" ||
+      this.state.p_insstatus == "0" ||
+      this.state.p_instype == "0") {
+      Alert.alert("Error", "Invalid entry !!!");
+      return false;
+    } else return true;
+
+  }
+
   getdata() {
-    ToastAndroid.show("Loading data...", ToastAndroid.SHORT);
-    let sprate = parseFloat(this.state.p_sprate) / 100;
-    let provisi = parseFloat(this.state.p_provisi) / 100;
+    if (this.input_validation() == true) {
+      ToastAndroid.show("Loading data...", ToastAndroid.SHORT);
+      let sprate =  parseFloat(this.state.p_sprate) / 100.0;
+      let provisi = parseFloat(this.state.p_provisi) / 100.0;
+      let idp = parseFloat(this.state.p_idp) / 100.0;
 
-    let str_param = "carmerk_id=" + this.state.p_merk + "&carmodel_id=" + this.state.p_model + "&cartype_id=" + this.state.p_cartype +
-      "&caryear=" + this.state.p_year + "&vehiclecondition_id=" + this.state.p_vehiclekondisi + "&vehiclecategory_id=" + this.state.p_vehiclekategory +
-      "&region_id=" + this.state.p_region + "&tenor=" + this.state.p_tenor + "&instype_id=" + this.state.p_instype +
-      "&usedfor_id=" + this.state.p_usedfor + "&vehicletype_id=" + this.state.p_vehicletype + "&instatus_id=" + this.state.p_insstatus+
-      "&sprate="+sprate.toString()+"&provisi="+provisi.toString()+"&loantype_id="+this.state.p_type;
+      let str_param = "carmerk_id=" + this.state.p_merk + "&carmodel_id=" + this.state.p_model + "&cartype_id=" + this.state.p_cartype +
+        "&caryear=" + this.state.p_year + "&vehiclecondition_id=" + this.state.p_vehiclekondisi + "&vehiclecategory_id=" + this.state.p_vehiclekategory +
+        "&region_id=" + this.state.p_region + "&tenor=" + this.state.p_tenor + "&instype_id=" + this.state.p_instype +
+        "&usedfor_id=" + this.state.p_usedfor + "&vehicletype_id=" + this.state.p_vehicletype + "&instatus_id=" + this.state.p_insstatus +
+        "&sprate=" + sprate.toString() + "&provisi=" + provisi.toString() + "&loantype_id=" + this.state.p_type + "&iotr=" + this.state.p_iotr +
+        "&idp=" + idp.toString();
 
-    this.setState({ p_message: str_param });
+      this.setState({ p_message: str_param });
 
-    str_param = "carmerk_id=9&carmodel_id=96&cartype_id=924&caryear=2010&vehiclecondition_id=1&vehiclecategory_id=2&region_id=1&tenor=3&instype_id=2&usedfor_id=1&vehicletype_id=5&instatus_id=1&sprate=0.07&provisi=0.03&loantype_id=1";
+      //str_param = "carmerk_id=9&carmodel_id=96&cartype_id=924&caryear=2010&vehiclecondition_id=1&vehiclecategory_id=2&region_id=1&tenor=4&instype_id=2&usedfor_id=1&vehicletype_id=5&instatus_id=1&sprate=0.07&provisi=0.03&loantype_id=1&iotr=0&idp=0";
 
-    this.props.navigation.navigate('result', { param: str_param, sprate: this.state.p_sprate, provisi: this.state.p_provisi });
-
-    // _wsJsonConnectionHTTP("get_calculator2",
-    //   str_param,
-    //   (d) => {
-    //     this.setState({
-    //       p_defotr: d.otr.toString(),
-    //       p_otr: 0,
-    //       p_rate: d.rate.toString(),
-    //       //p_sprate: "0",
-    //       p_insrate: d.insrate.toString(),
-    //       //p_provisi: "0",
-    //       p_ph: d.ph.toString(),
-
-    //       rate: d.rate, insrate: d.insrate, otr: d.otr, ph: d.ph, arr_rateins_amortisasi: d.arr_rateins_amortisasi
-
-    //     })
-
-    //     //this.set_ph();
-
-    //   });
-
+      this.props.navigation.navigate('result', { param: str_param });
+    }
   }
 
   render() {
@@ -291,7 +300,7 @@ class LoanCalculator extends Component {
             </View>
           </View>
 
-          <LoanTitle title1="SP.Rate" title2="Provisi" />
+          <LoanTitle title1="SP.Rate(%)" title2="Provisi(%)" />
           <View style={styles.BoxContent}>
             <View style={styles.actionInput}>
               <TextInput
@@ -299,6 +308,7 @@ class LoanCalculator extends Component {
                 placeholder="0"
                 keyboardType="numeric"
                 value={this.state.p_sprate}
+                onChangeText={(value) => this.setState({ p_sprate: value })}
               />
             </View>
             <View style={styles.actionInput}>
@@ -307,6 +317,29 @@ class LoanCalculator extends Component {
                 placeholder="0"
                 keyboardType="numeric"
                 value={this.state.p_provisi}
+                onChangeText={(value) => this.setState({ p_provisi: value })}
+              />
+            </View>
+          </View>
+
+          <LoanTitle title1="OTR" title2="DP(%)" />
+          <View style={styles.BoxContent}>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                value={this.state.p_iotr}
+                onChangeText={(value) => this.setState({ p_iotr: value })}
+              />
+            </View>
+            <View style={styles.actionInput}>
+              <TextInput
+                style={styles.Input, { textAlign: 'right' }}
+                placeholder="0"
+                keyboardType="numeric"
+                value={this.state.p_idp}
+                onChangeText={(value) => this.setState({ p_idp: value })}
               />
             </View>
           </View>
