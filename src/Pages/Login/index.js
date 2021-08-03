@@ -68,12 +68,13 @@ class Login extends Component {
     }
 
     do_login() {
+        
+
         _wsJsonConnectionHTTP("dat_email_login", "email_name=" + this.state.email + "&pin=" + this.state.pass, (d) => {
             if (d.value == "accept") {
                 storeData(this.state.email, this.state.pass);
-                //this.props.navigation.navigate('LoanCalculator');
                 this.props.navigation.navigate('LoanCalculator', { email_id: this.state.email });
-            } else Alert.alert("Error", "Email tidak terdaftar atau Pin Salah");
+            } else Alert.alert("Error", "Email tidak terdaftar atau Pin Salah");            
         });
     }
     register_email() {
@@ -101,7 +102,7 @@ class Login extends Component {
             );
             _wsJsonConnectionHTTP("ses_emailpin_request", "email_name=" + this.state.email, (d) => {
                 Alert.alert("Permintaan Pin Baru", d.value);
-            });            
+            });
         }
     }
 

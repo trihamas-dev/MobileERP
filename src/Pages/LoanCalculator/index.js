@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { _wsJsonConnectionHTTP } from '../../fungsi/function';
 import Autocomplete from 'react-native-autocomplete-input';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const LoanTitle = (props) => {
   return (
@@ -202,6 +203,7 @@ class LoanCalculator extends Component {
   }
 
   getdata() {
+    
     if (this.input_validation() == true) {
       ToastAndroid.show("Loading data...", ToastAndroid.SHORT);
       let sprate =  parseFloat(this.state.p_sprate) / 100.0;
@@ -218,7 +220,7 @@ class LoanCalculator extends Component {
       this.setState({ p_message: str_param });
 
       //str_param = "carmerk_id=9&carmodel_id=96&cartype_id=924&caryear=2010&vehiclecondition_id=1&vehiclecategory_id=2&region_id=1&tenor=4&instype_id=2&usedfor_id=1&vehicletype_id=5&instatus_id=1&sprate=0.07&provisi=0.03&loantype_id=1&iotr=0&idp=0";
-
+      Clipboard.setString(str_param);
       this.props.navigation.navigate('result', { param: str_param });
     }
   }

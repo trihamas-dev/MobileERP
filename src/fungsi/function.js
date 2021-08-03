@@ -23,6 +23,7 @@ export function _httpConnection(url, fcSuccess) {
 }
 
 export function _wsJsonConnectionHTTP(wsName, bodyParam, fcSuccess) {
+    
     fetch(wsURL + wsName,
         {
             method: 'POST',
@@ -55,25 +56,25 @@ export async function _httpconnection(wsName, bodyParam) {
                 },
                 body: bodyParam
             });
-        const text = await response.text();        
+        const text = await response.text();
         return _convertToJSON(text);
     } catch (error) {
         console.error(error);
     }
-    
+
 }
 
 export function _format_numeric(value, fixedValue) {
     var _value;
 
-    if(typeof(value)=="number"){
-        _value=value.toString();
-    }else if(typeof(value)=="string"){
-        _value=value;
-    }else{
+    if (typeof (value) == "number") {
+        _value = value.toString();
+    } else if (typeof (value) == "string") {
+        _value = value;
+    } else {
         return "";
     }
-    
+
     var _fixedValue = (fixedValue == undefined) ? 0 : fixedValue;
     var nilai = parseFloat(_value.replace(/,/g, ""));
     return nilai.toFixed(_fixedValue).replace(/(\d)(?=(\d{3})+\b)/g, '$1,');
